@@ -16,10 +16,10 @@ s1p = ["Status: Charged",]
 s2p = ["Status: Approved"] 
 s3p = ["Status: Declined"] 
 
-@bot.message_handler(commands=['chk'])
+@bot.message_handler(commands=['sp'])
 def check_card(message):
     try:
-        cc = message.text.split('/chk', 1)[1].strip()
+        cc = message.text.split('/sp', 1)[1].strip()
         user_id = message.from_user.id
         username = message.from_user.username or "NoUsername"
 
