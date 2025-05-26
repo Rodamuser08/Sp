@@ -1,6 +1,5 @@
 import time
 from telebot import TeleBot, types
-from check import checker
 from reg import reg
 from hit_sender import send  
 from sp import sh
