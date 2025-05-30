@@ -20,7 +20,7 @@ def send(cc, key, username, time_taken):
         bank = emj = do = dicr = typ = 'Unknown'
 
     msg1 = f"""
-<b>GATEWAY ➜ Shopify 5.00$</b>
+<b>GATEWAY ➜ Shopify £1.00</b>
 <b>RESPONSE ➜</b> {key}
 
 <b>CC ➜</b> <code>{cc}</code>
