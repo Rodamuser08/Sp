@@ -515,7 +515,7 @@ async def sh(message):
     json=json_data,
 ) as response:
             text = await response.text()
-            if "redirectUrl" in text.lower():
+            if "completed=true" in text.lower():
                 #print("Payment went through. No retry needed.")
                 
 
@@ -562,7 +562,7 @@ Bot by: TrickLab
                     final_text = await final_response.text()
                     fff = find_between(final_text, '"code":"', '"')
                     
-                    if "redirectUrl" in final_text.lower():
+                    if "completed=true" in final_text.lower():
                         print("Payment successful on retry.")
 
                         return f"""Card: {full_card}
