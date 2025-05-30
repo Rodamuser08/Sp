@@ -41,7 +41,7 @@ def check_card(message):
         print(f"SP Response: {result}")  # Debugging Log
 
         if any(k in result for k in s1p):
-            key = "Shopify Hit $5.00 🔥"
+            key = "Shopify Hit £1.00 🔥"
         elif any(k in result for k in s2p):
             key = "Shopify Approved ✅"
         elif any(k in result for k in s3p):
