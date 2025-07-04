@@ -60,7 +60,7 @@ async def reqproxy():
                         match = re.search(r'"score":"(\d+)"', text)
                         if match:
                             score = int(match.group(1))
-                            if 0 <= score <= 50:
+                            if 0 <= score <= 100:
                                 print(f"Live proxy with score {score} and IP {public_ip}")
                                 
                                 return aiohttp.ClientSession(
